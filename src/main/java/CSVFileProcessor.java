@@ -17,18 +17,18 @@ import java.util.Map;
  */
 public class CSVFileProcessor implements Runnable {
 
+    private String FILENAME;
     private Logger LOG = LoggerFactory.getLogger("CSVFileProcessor");
-    private Reader in = null;
+    private Reader INPUT = null;
     private String ROOT;
 
     public CSVFileProcessor(Path filename) {
-        // LOG.info("constructor " + filename);
 
-        String theFile = filename.getFileName().toString();
-        ROOT = theFile.substring(0, theFile.indexOf('.'));
+        FILENAME = filename.getFileName().toString();
+        ROOT = FILENAME.substring(0, FILENAME.indexOf('.'));
 
         try {
-            in = new FileReader(filename.toString());
+            INPUT = new FileReader(filename.toString());
         } catch (FileNotFoundException e) {
             LOG.error("File Issue: ",e);
         }
@@ -36,12 +36,14 @@ public class CSVFileProcessor implements Runnable {
     };
 
     public void run() {
-        LOG.info("Running: " + in.toString());
-        processMe(in, ROOT);
+        LOG.info("Processing file: " + FILENAME);
+        processMe(INPUT, ROOT);
     }
 
     private String clean(String s) {
         s = s.replace("&", "&amp;");
+        s = s.replace("<", "&lt;");
+        s = s.replace(">", "&gt;");
         s = s.replace("{", "(");
         s = s.replace("}", ")");
         return s;
@@ -73,7 +75,7 @@ public class CSVFileProcessor implements Runnable {
                 String st = "xdmp:document-insert( concat('/',xdmp:random(),'.xml'),"+sb.toString()+")";
                 s.submitRequest(s.newAdhocQuery(st));
             } catch (RequestException e) {
-                LOG.error("Failed to load one doc");
+                LOG.error("Failed to transform one row into an XML Document", e);
                 LOG.info(sb.toString());
             }
             s.close();

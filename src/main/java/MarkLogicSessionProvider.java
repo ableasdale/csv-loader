@@ -17,7 +17,7 @@ public class MarkLogicSessionProvider {
 
     private MarkLogicSessionProvider() {
         Logger LOG = LoggerFactory.getLogger("MarkLogicSessionProvider");
-        LOG.info("Initialising ContentSource");
+        LOG.debug("Initialising ContentSource");
         try {
             cs = ContentSourceFactory.newContentSource(new URI(Config.MARKLOGIC_XCC_URI));
         } catch (XccConfigException e) {
