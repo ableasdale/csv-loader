@@ -27,12 +27,14 @@ public class CSVFileProcessor implements Runnable {
         try {
             INPUT = new InputStreamReader(new FileInputStream(filename.toString()), "UTF-8");
         } catch (FileNotFoundException e) {
-            LOG.error("File Issue: ",e);
+            LOG.error("File Issue: ", e);
         } catch (UnsupportedEncodingException e) {
-            LOG.error("File Encoding Issue: ",e);
+            LOG.error("File Encoding Issue: ", e);
         }
 
-    };
+    }
+
+    ;
 
     public void run() {
         LOG.info("Processing file: " + FILENAME);
@@ -46,8 +48,11 @@ public class CSVFileProcessor implements Runnable {
         s = s.replace(">", "&gt;");
         s = s.replace("{", "(");
         s = s.replace("}", ")");
+        s = s.replaceAll("[^\\x20-\\x7e]", "");
         return s;
-    };
+    }
+
+    ;
 
 
     private void processMe(Reader reader, String rootElement) {
@@ -56,7 +61,7 @@ public class CSVFileProcessor implements Runnable {
         try {
             records = CSVFormat.RFC4180.withFirstRecordAsHeader().parse(reader);
         } catch (IOException e) {
-            LOG.error("File IO Issue: ",e);
+            LOG.error("File IO Issue: ", e);
         }
 
         for (CSVRecord record : records) {
@@ -72,7 +77,7 @@ public class CSVFileProcessor implements Runnable {
 
             Session s = MarkLogicSessionProvider.getSession();
             try {
-                String st = "xdmp:document-insert( concat('/',xdmp:random(),'.xml'),"+sb.toString()+")";
+                String st = "xdmp:document-insert( concat('/',xdmp:random(),'.xml')," + sb.toString() + ")";
                 s.submitRequest(s.newAdhocQuery(st));
             } catch (RequestException e) {
                 LOG.error("Failed to transform one row into an XML Document", e);
@@ -80,6 +85,8 @@ public class CSVFileProcessor implements Runnable {
             }
             s.close();
         }
-    };
+    }
+
+    ;
 
 }

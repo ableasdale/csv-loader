@@ -16,7 +16,7 @@ public class SampleThread implements Runnable {
         try {
             TimeUnit.SECONDS.sleep(5);
         } catch (InterruptedException e) {
-            LOG.error("InterruptedException Caught: ",e);
+            LOG.error("InterruptedException Caught: ", e);
         }
         LOG.info("Done");
     }

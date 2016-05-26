@@ -27,10 +27,6 @@ public class MarkLogicSessionProvider {
         }
     }
 
-    private static class LazyHolder {
-        private static final MarkLogicSessionProvider INSTANCE = new MarkLogicSessionProvider();
-    }
-
     private static MarkLogicSessionProvider getInstance() {
         return LazyHolder.INSTANCE;
     }
@@ -41,5 +37,9 @@ public class MarkLogicSessionProvider {
 
     public static Session getSession() {
         return getContentSource().newSession();
+    }
+
+    private static class LazyHolder {
+        private static final MarkLogicSessionProvider INSTANCE = new MarkLogicSessionProvider();
     }
 }
