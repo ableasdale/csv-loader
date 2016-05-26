@@ -5,10 +5,7 @@ import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.nio.file.Path;
 import java.util.Map;
 
@@ -28,9 +25,11 @@ public class CSVFileProcessor implements Runnable {
         ROOT = FILENAME.substring(0, FILENAME.indexOf('.'));
 
         try {
-            INPUT = new FileReader(filename.toString());
+            INPUT = new InputStreamReader(new FileInputStream(filename.toString()), "UTF-8");
         } catch (FileNotFoundException e) {
             LOG.error("File Issue: ",e);
+        } catch (UnsupportedEncodingException e) {
+            LOG.error("File Encoding Issue: ",e);
         }
 
     };
@@ -38,6 +37,7 @@ public class CSVFileProcessor implements Runnable {
     public void run() {
         LOG.info("Processing file: " + FILENAME);
         processMe(INPUT, ROOT);
+        LOG.info("Finished processing file: " + FILENAME);
     }
 
     private String clean(String s) {
