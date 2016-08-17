@@ -8,8 +8,8 @@ Some Java classes to allow you to import data from multiple CSV files into MarkL
 - Download the city file: http://geolite.maxmind.com/download/geoip/database/GeoLite2-City-CSV.zip
 - Download the country file: http://geolite.maxmind.com/download/geoip/database/GeoLite2-Country-CSV.zip
 - Unpack the zip file(s)
-- Edit Config.java **BASE_DATA_DIR** and the **MARKLOGIC_XCC_URI** to add your paths
-- Run LoadCSVs
+- Edit Config.java **BASE_DATA_DIR** and the **MARKLOGIC_XCC_URI** to add your path and to set your MarkLogic Database for the content.
+- Run **LoadCSVs.java**
 
 You should see something like this:
 
@@ -29,7 +29,7 @@ You should see something like this:
 16:33:47.005 [pool-1-thread-2] DEBUG MarkLogicSessionProvider - Initialising ContentSource
 ```
 
-This will create a large number of XML documents in your database - an example includes:
+This will create a large number of XML documents in your database (> 10M if you load both the City and Country CSV sets). An example of the XML output in MarkLogic includes:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
