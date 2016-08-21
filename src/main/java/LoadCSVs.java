@@ -32,7 +32,7 @@ public class LoadCSVs {
         try (Stream<Path> paths = Files.walk(Paths.get(Config.BASE_DATA_DIR)).filter(Files::isRegularFile)) {
             paths.forEach(
                     path -> {
-                        if (path.toString().endsWith(".csv"))
+                        if (path.toString().endsWith(".csv") || path.toString().endsWith(".CSV"))
                             executor.execute(new CSVFileProcessor(path));
                     }
             );
